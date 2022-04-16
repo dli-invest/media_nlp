@@ -1,0 +1,28 @@
+---
+import YoutubeData from "../../../../../../data/ytube/all.json"
+import VideoLayout from "../../../../layouts/VideoLayout.astro";
+import YoutubeLink from "../../../../components/YoutubeLink";
+
+export async function getStaticPaths() {
+    const current_year = new Date().getFullYear();
+	return YoutubeData.map((video) => ({ params: { id: video.video_id, year: String(current_year), channel: video.channel }, props: { allVideos: YoutubeData } }));
+}
+
+const { allVideos } = Astro.props;
+const title = 'Don"s Blog';
+const description = 'An example blog on Astro';
+
+const videos = allVideos.filter((post) => post.video_id === Astro.params.id).sort((a, b) => new Date(b.frontmatter.date).valueOf() - new Date(a.frontmatter.date).valueOf());
+/** filter posts by author, sort by date */
+
+const video_id = videos[0].video_id;
+
+const videoSrc = `//www.youtube.com/embed/${video_id}?enablejsapi=1`
+
+---
+
+<VideoLayout>
+<iframe width="1024" height="576" src={videoSrc}title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</VideoLayout>
+
+

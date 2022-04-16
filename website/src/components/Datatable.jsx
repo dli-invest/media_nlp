@@ -1,30 +1,7 @@
 import React from "react";
 import DataTable from "react-data-table-component";
 import styled from 'styled-components';
-import Button from "./Button";
-const columns = [
-    {
-        name: 'Title',
-        selector: row => row.name,
-    },
-    {
-        name: 'Year',
-        selector: row => row.year,
-    },
-];
-
-const data = [
-    {
-        id: 1,
-        name: 'Beetlejuice',
-        year: '1988',
-    },
-    {
-        id: 2,
-        name: 'Ghostbusters',
-        year: '1984',
-    },
-]
+import Button from "./shared/Button";
 
 const TextField = styled.input`
 	height: 32px;
@@ -70,7 +47,27 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
         </ClearButton>
     </>
 );
-export default function ExampleTable() {
+export default function ExampleTable({ columns = [
+    {
+        name: 'Title',
+        selector: row => row.name,
+    },
+    {
+        name: 'Year',
+        selector: row => row.year,
+    },
+], data = [
+    {
+        id: 1,
+        name: 'Beetlejuice',
+        year: '1988',
+    },
+    {
+        id: 2,
+        name: 'Ghostbusters',
+        year: '1984',
+    },
+] }) {
     const [filterText, setFilterText] = React.useState('Beetlejuice');
 	const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false);
 	const filteredItems = data.filter(
