@@ -1,5 +1,5 @@
 ---
-import YoutubeData from "../../../../../../data/ytube/all.json"
+import YoutubeData from "../../../../../../data/ytube/investing/all.json"
 import VideoLayout from "../../../../layouts/VideoLayout.astro";
 import YoutubeLink from "../../../../components/YoutubeLink";
 
@@ -22,7 +22,7 @@ const videoSrc = `//www.youtube.com/embed/${video_id}?enablejsapi=1`
 ---
 
 <VideoLayout>
-<iframe width="1024" height="576" src={videoSrc}title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="1024" height="576" src={videoSrc} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </VideoLayout>
 
 
