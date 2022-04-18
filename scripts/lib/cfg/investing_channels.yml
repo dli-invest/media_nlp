@@ -4,8 +4,8 @@ channels:
   # google auto annotations only apply to the popular content
   # Find a way to only analyze the big videos
   # Ignore proactive
-  - id: UC6zHYEnBuH4DYxbPLsbIaVw
-    label: Proactive
+  # - id: UC6zHYEnBuH4DYxbPLsbIaVw
+  #   label: Proactive
   #  everyone video gets transcripts now
     # no_transcript: True
     only_on_nlp_match: True

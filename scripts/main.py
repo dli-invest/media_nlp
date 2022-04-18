@@ -3,7 +3,7 @@ import argparse as ap
 import pathlib
 import glob
 import shutil
-import pandas as pd
+import json
 
 from datetime import date, datetime, timedelta
 from lib.util import get_config
@@ -24,13 +24,13 @@ def path_to_url(url: str) -> str:
 def main(args):
     end_date = str(date.today())
     raw_file = "data/ytube/investing/yt_data.json"
-    yt_columns = ["video_id","date","source","keywords","description","transcript_path","title"]
+    new_entries = []
     try:
-        yt_df = pd.read_json(raw_file)
+        yt_df = json.loads(raw_file)
     except FileNotFoundError:
-        yt_df = pd.DataFrame(columns=yt_columns)
+        yt_df = []
     except ValueError:
-        yt_df = pd.DataFrame(columns=yt_columns)
+        yt_df = []
     # TODO convert to object since this is so complicated
     # With an object I think it would be easier to parallelize
     for report_cfg_file in glob.glob("scripts/lib/cfg/*.yml"):
@@ -60,7 +60,7 @@ def main(args):
                 for video_info in video_data:
                     video_id = video_info.get("videoId")
                     # skip if video found already
-                    if video_id in yt_df.index:
+                    if video_id in yt_df:
                         continue
                     title = video_info.get("title")
                     description = video_info.get("description")
@@ -99,23 +99,22 @@ def main(args):
                                 "title": title,
                                 "source": channel_label,
                                 "channel_id": channel_id,
+                                "video_id": video_id,
+                                "url": f"https://www.youtube.com/watch?v={video_id}",
                                 "keywords": [],
                                 "description": description,
                                 # path to access file from website, need to control and replace all files again.
                                 "transcript_path": f"{file_path}",
                             }
                             # df.loc[video_id] = new_file
-                            if video_id in yt_df.index:
+                            if video_id in yt_df:
                                 print(f"Video {video_id} exists - not setting vid_id")
                             else:
                                 if is_generated:
-                                    print("adding row")
+                                    ic(f"adding video for channel {channel_id} and video {video_id}")
                                     # add row to df
-                                    print(new_file)
-                                    new_df = pd.DataFrame.from_dict(new_file)
-                                    print(new_df)
-                                    yt_df = yt_df.append(new_df)
-                                    print(yt_df)
+                                    new_entries.append(new_file)
+                                    yt_df.append(new_file)
                                 else:
                                     print("Updating is_generate flag")
 
@@ -149,9 +148,11 @@ def main(args):
         except Exception as e:
             ic("FAILED TO MAKE TEMPLATE")
             ic(e)
-        print(yt_df)
-        yt_df = yt_df.sort_values(by=["date"], ascending=False)
-        yt_df.to_json(raw_file)
+        #yt_df = yt_df.sort_values(by=["date"], ascending=False)
+        # yt_df.to_json(raw_file)
+
+        with open(raw_file, 'w') as f:
+            f.write(json.dumps(yt_df))
         # yt_df["path"] = yt_df["path"].apply(
         #     lambda x: path_to_url(x)
         # )  # f'<a href="./{investing/2020-07-09/-5aG8r2fkM0.html}'

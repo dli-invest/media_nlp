@@ -2,6 +2,12 @@
 apply nlp to breaking news from various websites and youtube videos
 
 
+To run youtube script
+
+make sure YOUTUBE_API_KEY is set and 
+```
+python3 scripts/main.py
+```
 ## Objectives
 
 Fix the weaknesses from ytube_nlp and leverage the ability of astro to serve various youtube transcripts as json

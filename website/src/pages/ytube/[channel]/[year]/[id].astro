@@ -1,28 +1,103 @@
 ---
-import YoutubeData from "../../../../../../data/ytube/investing/all.json"
-import VideoLayout from "../../../../layouts/VideoLayout.astro";
+import YoutubeData from "../../../../../../data/ytube/investing/yt_data.json"
 import YoutubeLink from "../../../../components/YoutubeLink";
+import fs from "fs";
 
 export async function getStaticPaths() {
-    const current_year = new Date().getFullYear();
-	return YoutubeData.map((video) => ({ params: { id: video.video_id, year: String(current_year), channel: video.channel }, props: { allVideos: YoutubeData } }));
+  // update this to parse year from the url
+	return YoutubeData.map((video) => ({ params: { id: String(video.video_id), year: String(new Date(video.date).getFullYear()), channel: video.source }, props: { allVideos: YoutubeData } }));
 }
 
 const { allVideos } = Astro.props;
-const title = 'Don"s Blog';
-const description = 'An example blog on Astro';
 
-const videos = allVideos.filter((post) => post.video_id === Astro.params.id).sort((a, b) => new Date(b.frontmatter.date).valueOf() - new Date(a.frontmatter.date).valueOf());
+const videos = allVideos.filter((post) => post.video_id === Astro.params.id).sort((a, b) => new Date(b.date).valueOf() - new Date(a.date).valueOf());
 /** filter posts by author, sort by date */
 
 const video_id = videos[0].video_id;
 
 const videoSrc = `//www.youtube.com/embed/${video_id}?enablejsapi=1`
 
+const title = videos[0].title;
+const description = videos[0].description;
+
+// grab transcript from params
+const { id, year, channel } = Astro.params;
+// parse json to get youtube data base on video id
+const videoInfo = allVideos.filter((post) => post.video_id === id)[0];
+
+async function getJson(file_path) {
+  const data = JSON.parse(fs.readFileSync(file_path, 'utf8'));
+  return data
+}
+
+// use the video info to get the transcript
+const transcript = await getJson(`../${videoInfo.transcript_path}`);
+
+// link to channel page
 ---
-
-<VideoLayout>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.5.4/dist/css/uikit.min.css" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="uk-section uk-section-primary">
+        <div class="uk-container">
 <iframe width="1024" height="576" src={videoSrc} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</VideoLayout>
+        </div>
+      </div>
+Version: {transcript.Version} <br />
+Description: {description}
+ <div class="uk-section uk-section-muted">
+        <div class="uk-container">
 
-
+          <h3>Data</h3>
+          <table class="uk-table uk-table-striped">
+            <thead>
+              <tr>
+                  <th>Text</th>
+                  <th>duration</th>
+                  <th>start</th>
+                  <th>ents</th>
+                  <th>sentiment</th>
+              </tr>
+            </thead>
+            <tbody>
+            {transcript.LINES.map((line => {
+                return (
+                    <>
+                        <tr>
+                          <td>{line.text}</td>
+                          <td>{line.duration}</td>
+                           <td><a class="uk-link-text" href="#"  onclick="seekTo({{line.start}});">Jump to {line.start}</a></td>
+                            <td>
+                            {line.ents.map((ent => {
+                                // let LabelText = <a class="uk-label uk-label-success" href="#">{ent.text}</a>
+                                // if (ent.label_ in ["PERSON", "ORG", "EVENT"]) {
+                                //     LabelText = <a class="uk-label uk-label-success" href="#">{ent.text}</a>
+                                // } else if (ent.label_ in ["PERCENT", "QUANTITY", "TIME", "CARDINAL"]) {
+                                //     //  onclick={`"seekTo(${ent.start});"`}
+                                //     LabelText = <a class="uk-label uk-label-warning" href="#">{ent.text}</a>
+                                // } else {
+                                //     LabelText = <a class="uk-label uk-label-danger" href="#">{ent.text}</a>
+                                // }
+                                return (
+                                    <>
+                                       <a class="uk-label uk-label-success" href="#">{ent.label_}</a>
+                                       <span class="uk-label">
+                                            {ent.text}
+                                        </span>
+                                    </>
+                                )
+                            }))}
+                            </td>
+                        </tr>
+                    </>
+                )
+            }))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+  </body>
+</html>

@@ -1,0 +1,47 @@
+---
+import YoutubeData from "../../../../data/ytube/investing/yt_data.json"
+import Datatable from "../../components/Datatable.jsx";
+import YoutubeLink from "../../components/YoutubeLink";
+import fs from "fs";
+
+export async function getStaticPaths() {
+    // get unique channels from YoutubeData
+    let uniqueChannels = YoutubeData.map(function(obj) { return obj.channel; });
+    uniqueChannels = uniqueChannels.filter(function(v,i) { return uniqueChannels.indexOf(v) == i; });
+    console.log(uniqueChannels);
+	return uniqueChannels.map((channel) => ({ params: { channel: String(channel) }, props: { channels: uniqueChannels } }));
+}
+
+const { channels } = Astro.props;
+
+// grab transcript from params
+const { channel } = Astro.params;
+// parse json to get youtube data base on video id
+const videosForChannel = YoutubeData.filter((post) => post.channel === channel);
+
+const columnsForTable = videosForChannel.map(video => {
+    const currDate = new Date(video.date)
+    const currYear = currDate.getFullYear()
+    return {
+        name: video.title,
+        url: `https://www.youtube.com/watch?v=${video.video_id}`,
+        date: video.date,
+        channel: video.channel_id,
+        publisher: video.source,
+        video_path: `/${video.source}/${currYear}/${video.video_id}`,
+    }
+})
+// link to channel page
+---
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.5.4/dist/css/uikit.min.css" />
+  </head>
+  <body>
+
+  <Datatable client:visible columns={[{
+      name: "",
+      selector: row => row.name
+  }]} />
+  </body>
+</html>
