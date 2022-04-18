@@ -1,0 +1,67 @@
+name: Scan YTube
+# Don't want to burn my private minutes at this point
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '30 13 * * *'
+
+env:
+  YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+  MJ_APIKEY_PUBLIC: ${{ secrets.MJ_APIKEY_PUBLIC }}
+  MJ_APIKEY_PRIVATE: ${{ secrets.MJ_APIKEY_PRIVATE }}
+  DISCORD_CODE_STATUS_WEBHOOK: ${{ secrets.DISCORD_CODE_STATUS_WEBHOOK }}
+  DISCORD_VIDEO_WEBHOOK: ${{ secrets.DISCORD_VIDEO_WEBHOOK }}
+
+jobs:
+  make_report:
+    name: Generate Report
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.8' # Semantic version range syntax or exact version of a Python version
+          architecture: 'x64' # Optional - x64 or x86, defaults to x64
+      - name: installation of dependencies
+        run: |
+          if [ -f scripts/requirements.txt ]; then pip install -r scripts/requirements.txt; fi
+          python -m spacy download en_core_web_sm
+          python -m textblob.download_corpora
+      
+      - name: Generate Report
+        run:  python3 scripts/main.py
+      
+      - name: Commit files
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add *.json
+          git add data/ytube
+          git commit -m "added json files"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/upload-artifact@v1
+        name: Upload Report folder
+        with:
+          name: report
+          path: data/ytube/investing
+
+      - uses: sarisia/actions-status-discord@v1
+        if: failure()
+        with:
+          webhook: ${{ secrets.DISCORD_CODE_STATUS_WEBHOOK }}
+          status: ${{ job.status }}
+          title: ${{github.repository}}
+          description: "Build and deploy to GitHub Pages"
+          nofail: false
+          nocontext: false
+          noprefix: false
+          color: 0xff0000
+          username: GitHub Actions

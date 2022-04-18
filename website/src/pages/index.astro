@@ -1,20 +1,31 @@
 ---
-import {Content as TourContent} from '../content/Tour.md';
-import Logo from '../components/shared/Logo.astro';
+import SimpleLink from "../components/SimpleLink";
 import '../styles/global.css';
 import '../styles/home.css';
-import ReactCounter from '../components/ReactCounter.jsx';
-import VueCounter from '../components/VueCounter.vue';
-import Datatable from "../components/Datatable.jsx";
+import YoutubeData from "../../../data/ytube/investing/yt_data.json"
 
 // Component Script:
 // You can write any JavaScript/TypeScript that you'd like here.
 // It will run during the build, but never in the browser.
 // All variables are available to use in the HTML template below.
-let title = 'My Astro Site';
+let title = 'Youtube Data';
 
 // Full Astro Component Syntax:
 // https://docs.astro.build/core-concepts/astro-components/
+
+const subsetData = YoutubeData.slice(0, 5000);
+const columnsForTable = subsetData.map(video => {
+    const currDate = new Date(video.date)
+    const currYear = currDate.getFullYear()
+    return {
+        name: video.title,
+        url: `https://www.youtube.com/watch?v=${video.video_id}`,
+        date: video.date,
+        channel: video.channel_id,
+        publisher: video.source,
+        video_path: `/ytube/${video.source}/${currYear}/${video.video_id}`,
+    }
+})
 ---
 <html lang="en">
 <head>
@@ -31,24 +42,31 @@ let title = 'My Astro Site';
 </head>
 <body>
 	<main>
-
-
-		<!--
-
-		You can also use imported framework components directly in your markup!
-		
-		Note: by default, these components are NOT interactive on the client.
-		The `client:visible` directive tells Astro to make it interactive.
-		
-		See https://docs.astro.build/core-concepts/component-hydration/ 
-
-		-->
-
-		<ReactCounter client:visible />
-
-		<VueCounter client:visible />
-		<!-- grab latest datatable entries -->
-		<!-- <Datatable client:visible /> -->
+	<table class="uk-table">
+    <caption>Video Channel</caption>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Url</th>
+            <th>Date</th>
+            <th>Publisher</th>
+            <th>Video Path</th>
+        </tr>
+    </thead>
+    <tbody>
+        {columnsForTable.map((column) => {
+            return (
+                <tr>
+                    <td>{column.name}</td>
+                    <td><SimpleLink href={column.url} text={column.url} /></td>
+                    <td>{column.date}</td>
+                    <td>{column.publisher}</td>
+                    <td><SimpleLink href={`/ytube${column.video_path}`} text={column.video_path} /></td>
+                </tr>
+            )
+        })} 
+    </tbody>
+</table>
 	</main>
 </body>
 </html>

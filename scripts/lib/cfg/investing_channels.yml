@@ -8,7 +8,7 @@ channels:
   #   label: Proactive
   #  everyone video gets transcripts now
     # no_transcript: True
-    only_on_nlp_match: True
+    # only_on_nlp_match: True
   # - id: UCrp_UI8XtuYfpiqluWLD7Lw
   #   # this one has more videos
   #   label: cnbc television
@@ -28,6 +28,31 @@ channels:
   - id: UCrp_UI8XtuYfpiqluWLD7Lw
     label: CNBC television
     only_on_nlp_match: True
+
+  - id: UCN-qfPKTQ_Wxr8vZLVfM95w
+    label: FREEINVESTING
+    only_on_nlp_match: False
+
+  - id: UCwjvvgGX6oby5mZ3gbDe8Ug
+    label: China Insights
+    only_on_nlp_match: False
+
+  - id: UCyz6-taovlaOkPsPtK4KNEg
+    label: Goldman Sachs
+    only_on_nlp_match: False
+
+  - id: UCbsDR27rGCFdDKQVRl_tgEQ
+    label: Next Level Life
+    only_on_nlp_match: False 
+
+  - id: UCW39zufHfsuGgpLviKh297Q
+    label: DW Documentary
+    only_on_nlp_match: False 
+  
+  - id: UCSJx2iNjVaCCPaB8SPU_XXw
+    label: Epic Economist
+    only_on_nlp_match: False 
+
 email:
   from: lidavid@uvic.ca
   to: studentdavidli@gmail.com

@@ -105,7 +105,10 @@ def main(args):
                                 "description": description,
                                 # path to access file from website, need to control and replace all files again.
                                 "transcript_path": f"{file_path}",
+                                # need to get url to build file somehow
                             }
+                            current_year = date.today().year
+                            match_object["video_path"] = f"/ytube/{channel_label}/{current_year}/{video_id}"
                             # df.loc[video_id] = new_file
                             if video_id in yt_df:
                                 print(f"Video {video_id} exists - not setting vid_id")

@@ -2,13 +2,13 @@
 import YoutubeData from "../../../../data/ytube/investing/yt_data.json"
 import Datatable from "../../components/Datatable.jsx";
 import YoutubeLink from "../../components/YoutubeLink";
+import SimpleLink from "../../components/SimpleLink"
 import fs from "fs";
 
 export async function getStaticPaths() {
     // get unique channels from YoutubeData
-    let uniqueChannels = YoutubeData.map(function(obj) { return obj.channel; });
+    let uniqueChannels = YoutubeData.map(function(obj) { return obj.source; });
     uniqueChannels = uniqueChannels.filter(function(v,i) { return uniqueChannels.indexOf(v) == i; });
-    console.log(uniqueChannels);
 	return uniqueChannels.map((channel) => ({ params: { channel: String(channel) }, props: { channels: uniqueChannels } }));
 }
 
@@ -17,7 +17,7 @@ const { channels } = Astro.props;
 // grab transcript from params
 const { channel } = Astro.params;
 // parse json to get youtube data base on video id
-const videosForChannel = YoutubeData.filter((post) => post.channel === channel);
+const videosForChannel = YoutubeData.filter((post) => post.source === channel);
 
 const columnsForTable = videosForChannel.map(video => {
     const currDate = new Date(video.date)
@@ -32,16 +32,37 @@ const columnsForTable = videosForChannel.map(video => {
     }
 })
 // link to channel page
+
 ---
 <html>
   <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.5.4/dist/css/uikit.min.css" />
   </head>
   <body>
-
-  <Datatable client:visible columns={[{
-      name: "",
-      selector: row => row.name
-  }]} />
+  <table class="uk-table">
+    <caption>Video Channel</caption>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Url</th>
+            <th>Date</th>
+            <th>Publisher</th>
+            <th>Video Path</th>
+        </tr>
+    </thead>
+    <tbody>
+        {columnsForTable.map((column) => {
+            return (
+                <tr>
+                    <td>{column.name}</td>
+                    <td><SimpleLink href={column.url} text={column.url} /></td>
+                    <td>{column.date}</td>
+                    <td>{column.publisher}</td>
+                    <td><SimpleLink href={`/ytube${column.video_path}`} text={column.video_path} /></td>
+                </tr>
+            )
+        })} 
+    </tbody>
+</table>
   </body>
 </html>

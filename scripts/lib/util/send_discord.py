@@ -4,13 +4,14 @@ import requests
 from datetime import date
 
 def send_data_to_discord(channel_data):
-    base_url = "http://dli-invest.github.io/ytube_nlp"
+    base_url = "http://dli-invest.github.io/media_nlp"
     def make_embed(list_item):
         videoId = list_item.get('videoId')
         channelId = list_item.get('channelId')
         title = list_item.get('title')
+        video_path = list_item.get('video_path')
         end_date = str(date.today())
-        report_path = f"{base_url}/investing/{end_date}/{videoId}.html"
+        report_path = f"{base_url}/{video_path}"
         published_at = list_item.get('publishedAt')
         channel_label = list_item.get('source')
         description = list_item.get('description')[0:1950]
