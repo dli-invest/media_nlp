@@ -10,7 +10,7 @@ on:
     - cron:  '30 13 * * *'
 
 env:
-  YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+  YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY  }}
   MJ_APIKEY_PUBLIC: ${{ secrets.MJ_APIKEY_PUBLIC }}
   MJ_APIKEY_PRIVATE: ${{ secrets.MJ_APIKEY_PRIVATE }}
   DISCORD_CODE_STATUS_WEBHOOK: ${{ secrets.DISCORD_CODE_STATUS_WEBHOOK }}

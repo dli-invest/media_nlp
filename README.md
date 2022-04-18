@@ -8,6 +8,13 @@ make sure YOUTUBE_API_KEY is set and
 ```
 python3 scripts/main.py
 ```
+
+to run the astro script
+```
+cd website
+yarn build
+```
+
 ## Objectives
 
 Fix the weaknesses from ytube_nlp and leverage the ability of astro to serve various youtube transcripts as json
