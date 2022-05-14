@@ -43,7 +43,7 @@ const columnsForTable = subsetData.map(video => {
 <body>
 	<main>
 	<table class="uk-table">
-    <caption>Video Channel</caption>
+    <caption>Data Table for rss feeds</caption>
     <thead>
         <tr>
             <th>Title</th>
@@ -60,8 +60,8 @@ const columnsForTable = subsetData.map(video => {
                     <td>{column.name}</td>
                     <td><SimpleLink href={column.url} text={column.url} /></td>
                     <td>{column.date}</td>
-                    <td>{column.publisher}</td>
-                    <td><SimpleLink href={`/ytube${column.video_path}`} text={column.video_path} /></td>
+                    <td><SimpleLink href={`/media_nlp/ytube/${column.publisher}`} text={column.publisher} /></td>
+                    <td><SimpleLink href={`/media_nlp/${column.video_path}`} text={column.video_path} /></td>
                 </tr>
             )
         })} 

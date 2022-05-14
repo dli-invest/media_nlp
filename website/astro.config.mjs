@@ -7,5 +7,8 @@ export default defineConfig({
   integrations: [
     react(),
     vue(),
-  ]
+  ],
+  build: {
+    site: "https://dli-invest.github.io/media_nlp"
+  }
 });

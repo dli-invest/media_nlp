@@ -139,14 +139,12 @@ def main(args):
         # Move to function or something or rewrite to class
         try:
             options = dict(Version="1.0.0", EMAIL_DATA=email_channel_data)
-            with open("lib/email.jinja2") as file_:
+            with open("scripts/lib/email.jinja2") as file_:
                 template = Template(file_.read())
             email_html = template.render(**options)
             # send email
             ic(email_channel_data)
             send_mailjet_email(report_cfg, email_html)
-            with open("report/investing/email.html", "w", errors="ignore") as f:
-                f.write(email_html)
 
         except Exception as e:
             ic("FAILED TO MAKE TEMPLATE")

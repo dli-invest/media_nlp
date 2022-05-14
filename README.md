@@ -15,6 +15,10 @@ cd website
 yarn build
 ```
 
+In order to find the channel id for stonks, after viewing a video from that channel click on the channel name on the video and the channel id will be shown.
+
+As for finding videos, you have to inspect iframes and find where the video is being loaded from and then run assemblyAi on that video file to extract the transcript
+
 ## Objectives
 
 Fix the weaknesses from ytube_nlp and leverage the ability of astro to serve various youtube transcripts as json

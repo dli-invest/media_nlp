@@ -28,7 +28,7 @@ const columnsForTable = videosForChannel.map(video => {
         date: video.date,
         channel: video.channel_id,
         publisher: video.source,
-        video_path: `/${video.source}/${currYear}/${video.video_id}`,
+        video_path: `/media_nlp/${video.source}/${currYear}/${video.video_id}`,
     }
 })
 // link to channel page
@@ -58,7 +58,7 @@ const columnsForTable = videosForChannel.map(video => {
                     <td><SimpleLink href={column.url} text={column.url} /></td>
                     <td>{column.date}</td>
                     <td>{column.publisher}</td>
-                    <td><SimpleLink href={`/ytube${column.video_path}`} text={column.video_path} /></td>
+                    <td><SimpleLink href={`${column.video_path}`} text={column.video_path} /></td>
                 </tr>
             )
         })} 
