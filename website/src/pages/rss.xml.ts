@@ -13,10 +13,10 @@ const feedResults = YoutubeData.map(video => {
       // source: "https://dli-invest.github.io/media_nlp",
       // channel: video.channel_id,
       author: video.source,
-      link: `https://dli-invest.github.io/media_nlp/ytube/${video.source}/${currentYear}/${video.id}`,
+      link: `https://dli-invest.github.io/media_nlp/ytube/${video.source}/${currentYear}/${video.video_id}`,
   }
 })
-console.log("feedResults", feedResults)
+
 export const get = () => rss({
     title: 'Feed For Media Nlp',
     description: 'Investing Videos',
