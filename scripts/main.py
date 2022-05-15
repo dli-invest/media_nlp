@@ -25,12 +25,8 @@ def main(args):
     end_date = str(date.today())
     raw_file = "data/ytube/investing/yt_data.json"
     new_entries = []
-    try:
-        yt_df = json.loads(raw_file)
-    except FileNotFoundError:
-        yt_df = []
-    except ValueError:
-        yt_df = []
+    with open(raw_file, "r") as file:
+        yt_df = json.load(file)
     # TODO convert to object since this is so complicated
     # With an object I think it would be easier to parallelize
     for report_cfg_file in glob.glob("scripts/lib/cfg/*.yml"):
