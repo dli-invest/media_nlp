@@ -13,7 +13,7 @@ const feedResults = YoutubeData.map(video => {
       // source: "https://dli-invest.github.io/media_nlp",
       // channel: video.channel_id,
       author: video.source,
-      link: `https://dli-invest.github.io/media_nlp/ytube/${video.source}/${currentYear}/${video.channel_id}`,
+      link: `https://dli-invest.github.io/media_nlp/ytube/${video.source}/${currentYear}/${video.id}`,
   }
 })
 console.log("feedResults", feedResults)
