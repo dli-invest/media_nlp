@@ -13,7 +13,9 @@ let title = 'Youtube Data';
 // Full Astro Component Syntax:
 // https://docs.astro.build/core-concepts/astro-components/
 
-const subsetData = YoutubeData.slice(0, 5000);
+// reverse order of YoutubeData array
+const reversed = YoutubeData.reverse();
+const subsetData = reversed.slice(0, 5000);
 const columnsForTable = subsetData.map(video => {
     const currDate = new Date(video.date)
     const currYear = currDate.getFullYear()
@@ -26,6 +28,8 @@ const columnsForTable = subsetData.map(video => {
         video_path: `/ytube/${video.source}/${currYear}/${video.video_id}`,
     }
 })
+
+// sort by date
 ---
 <html lang="en">
 <head>
