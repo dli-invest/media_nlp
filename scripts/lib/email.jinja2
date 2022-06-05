@@ -25,10 +25,10 @@
       </thead>
       {% for full_video_data in EMAIL_DATA %}
         <tr>
-          <td><a href="{{full_video_data.get('url')}}">{{full_video_data.get('url')}}</a></td>
+          <td><a href="https://dli-invest.github.io/media_nlp{{full_video_data.get('video_path')}}">{{full_video_data.get('videoId')}}</a></td>
           <td>{{full_video_data.get('channelId')}}</td>
           <td>{{full_video_data.get('description')}}</td>
-          <td>{{full_video_data.get('title')}}</td>
+          <td><a href="https://www.youtube.com/watch?v={{full_video_data.get('videoId')}}">{{full_video_data.get('title')}}</a></td>
           <td>{{full_video_data.get('phrases')}}</td>
           <td>{{full_video_data.get('has_report')}}</td>
         </tr>
