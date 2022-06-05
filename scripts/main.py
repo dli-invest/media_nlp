@@ -153,23 +153,6 @@ def main(args):
         # yt_df["path"] = yt_df["path"].apply(
         #     lambda x: path_to_url(x)
         # )  # f'<a href="./{investing/2020-07-09/-5aG8r2fkM0.html}'
-        # try:
-        #     # slice yt_df
-        #     yt_df_small = yt_df.head(5000)
-        #     options = dict(
-        #         HTML_TABLE=yt_df_small.to_html(
-        #             table_id="datatable",
-        #             classes="uk-table cell-border compact stripe",
-        #             render_links=True,
-        #         )
-        #     )
-        #     # with open("lib/index.jinja2") as file_:
-        #     #     template = Template(file_.read())
-        #     # index_html = template.render(**options)
-        #     # with open("report/gh-pages/index.html", "w", errors='ignore') as file_:
-        #     #     file_.write(index_html)
-        # except Exception as e:
-        #     ic(e)
 
 if __name__ == "__main__":
     assert sys.version_info >= (3, 6)
