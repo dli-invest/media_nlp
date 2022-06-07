@@ -53,7 +53,7 @@ Description: {description}
 <a href="/">Back to Homepage</a>
 
 <div>
-  <a href="/ytube/{{channel}}"><span class="uk-label">{channel}</span></a>
+  <a href="/ytube/{channel}"><span class="uk-label">{channel}</span></a>
 </div>
 
  <div class="uk-section uk-section-muted">
@@ -77,7 +77,7 @@ Description: {description}
                         <tr>
                           <td>{line.text}</td>
                           <td>{line.duration}</td>
-                           <td><a class="uk-link-text" href="#"  onclick="seekTo({{line.start}});">Jump to {line.start}</a></td>
+                           <td><a class="uk-link-text" href="#"  onclick="seekTo({line.start});">Jump to {line.start}</a></td>
                             <td>
                             {line.ents.map((ent => {
                                 // let LabelText = <a class="uk-label uk-label-success" href="#">{ent.text}</a>
