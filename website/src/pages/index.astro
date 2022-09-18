@@ -15,7 +15,7 @@ let title = 'Youtube Data';
 
 // reverse order of YoutubeData array
 const reversed = YoutubeData.reverse();
-const subsetData = reversed.slice(0, 5000);
+const subsetData = reversed.slice(0, 1000);
 const columnsForTable = subsetData.map(video => {
     const currDate = new Date(video.date)
     const currYear = currDate.getFullYear()
