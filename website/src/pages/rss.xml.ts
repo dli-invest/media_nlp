@@ -2,7 +2,16 @@
 import rss from '@astrojs/rss';
 import YoutubeData from "../../../data/ytube/investing/yt_data.json"
 
-const feedResults = YoutubeData.map(video => {
+// filter YoutubeData, just get articles in past week
+const filteredData = YoutubeData.filter((item) => {
+  const date = new Date(item.publishedAt);
+  const today = new Date();
+  const diffTime = Math.abs(today.getDate() - date.getDate());
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  return diffDays <= 7;
+});
+
+const feedResults = filteredData.map(video => {
   const currDate = new Date(video.date)
   const currentYear = currDate.getFullYear()
   return {
