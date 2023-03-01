@@ -8,7 +8,7 @@ const filteredData = YoutubeData.filter((item) => {
   const today = new Date();
   const diffTime = Math.abs(today.getDate() - date.getDate());
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  return diffDays <= 7;
+  return diffDays <= 2;
 });
 
 const feedResults = filteredData.map(video => {
